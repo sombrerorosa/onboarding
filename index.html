@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sombrero Rosa — Cuestionario de Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,400;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0D1E3A;
+    --navydk:#08111E;
+    --white:#F7F4F0;
+    --off:#EEEAE3;
+    --cream:#E8E3D8;
+    --rosa:#D4748C;
+    --rosa2:#C05A72;
+    --gold:#C9A84C;
+    --gold2:#A88830;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    background:var(--navydk);
+    overflow:hidden;
+  }
+  #app{position:relative;width:100vw;height:100vh;}
+
+  .section{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8vh 8vw;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(24px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  .section.active{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+  }
+  .section.dark{ background:var(--navy); color:var(--white); }
+  .section.light{ background:var(--off); color:var(--navy); }
+
+  .inner{ max-width:760px; width:100%; position:relative; }
+
+  .barleft{
+    position:absolute;
+    left:-8vw;
+    top:-4vh;
+    bottom:-4vh;
+    width:4px;
+  }
+  .dark .barleft{ background:var(--rosa); }
+  .light .barleft{ background:var(--gold); }
+
+  .eyebrow{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .eyebrow .line{ height:1px; width:36px; background:var(--gold); opacity:.6; }
+
+  .qnum{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:200;
+    font-size:clamp(70px,11vw,140px);
+    line-height:.8;
+    position:absolute;
+    top:-40px;
+    right:0;
+    opacity:.08;
+    user-select:none;
+  }
+  .dark .qnum{ color:var(--white); }
+  .light .qnum{ color:var(--navy); }
+
+  h1.question{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,3.4vw,36px);
+    line-height:1.25;
+    max-width:14ch;
+    margin-bottom:18px;
+  }
+  .context{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:19px;
+    opacity:.72;
+    max-width:56ch;
+    line-height:1.6;
+    margin-bottom:34px;
+  }
+
+  .answerzone{
+    border-top:1px solid rgba(0,0,0,.12);
+    padding-top:22px;
+    min-height:90px;
+  }
+  .dark .answerzone{ border-top:1px solid rgba(255,255,255,.14); }
+
+  textarea.answer{
+    width:100%;
+    min-height:110px;
+    resize:vertical;
+    background:transparent;
+    border:none;
+    outline:none;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:20px;
+    line-height:1.6;
+  }
+  .dark textarea.answer{ color:var(--white); }
+  .light textarea.answer{ color:var(--navy); }
+  textarea.answer::placeholder{ opacity:.35; font-family:'Plus Jakarta Sans',sans-serif; font-style:normal; font-size:14px; letter-spacing:.02em;}
+
+  /* separator diamond */
+  .sep{ display:flex; align-items:center; gap:14px; margin:0 0 26px 0; opacity:.5; }
+  .sep .l{ height:1px; flex:1; background:currentColor; opacity:.25; }
+  .sep .d{ color:var(--gold); font-size:12px; }
+
+  /* cover */
+  #cover{ background:var(--navydk); color:var(--white); text-align:center; flex-direction:column; }
+  #cover .kicker{ font-size:10px; letter-spacing:.5em; text-transform:uppercase; color:var(--gold); margin-bottom:26px;}
+  #cover h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:400;
+    font-style:italic;
+    font-size:clamp(38px,6.5vw,70px);
+    margin-bottom:18px;
+  }
+  #cover .client{
+    font-size:15px;
+    letter-spacing:.05em;
+    color:var(--rosa);
+    margin-bottom:36px;
+    font-weight:600;
+  }
+  #cover p.desc{
+    max-width:520px;
+    font-size:15.5px;
+    line-height:1.8;
+    opacity:.75;
+    margin-bottom:44px;
+  }
+  .startbtn{
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    background:none;
+    border:1px solid var(--rosa);
+    color:var(--white);
+    padding:16px 40px;
+    cursor:pointer;
+    transition:all .3s ease;
+  }
+  .startbtn:hover{ background:var(--rosa); }
+  .startbtn:disabled{ opacity:.35; cursor:not-allowed; }
+  .startbtn:disabled:hover{ background:none; }
+
+  /* contact step */
+  .field{ margin-bottom:22px; text-align:left; }
+  .field label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:8px;
+    font-weight:700;
+  }
+  .field input{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,.25);
+    outline:none;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:16px;
+    color:var(--white);
+    padding:8px 2px;
+  }
+  .field input::placeholder{ color:rgba(255,255,255,.3); }
+  .field input:focus{ border-bottom-color:var(--rosa); }
+  .fieldgrid{ display:grid; grid-template-columns:1fr 1fr; gap:0 28px; }
+  .fielderr{ font-size:11px; color:var(--rosa); margin-top:6px; min-height:14px; }
+  #contactStep .inner{ text-align:left; }
+  #contactStep h1{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(28px,4.5vw,44px);
+    margin-bottom:14px;
+  }
+  #contactStep .lead{
+    font-size:15px;
+    line-height:1.7;
+    opacity:.72;
+    margin-bottom:38px;
+    max-width:52ch;
+  }
+
+  /* closing */
+  #closing{ background:var(--navy); color:var(--white); text-align:center; flex-direction:column; }
+  #closing h1{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(30px,5vw,48px);
+    margin-bottom:20px;
+  }
+  #closing p{ max-width:480px; font-size:15px; line-height:1.8; opacity:.75; margin-bottom:10px;}
+  #sendBtn{ margin-top:26px; }
+  #sendStatus{ margin-top:18px; font-size:13px; letter-spacing:.05em; min-height:20px; }
+  #sendStatus.ok{ color:#8FBF9F; }
+  #sendStatus.err{ color:var(--rosa); }
+
+  /* nav + progress */
+  #chrome{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6vw 4vh 6vw;
+    z-index:50;
+    pointer-events:none;
+  }
+  .navbtn{
+    pointer-events:auto;
+    background:none;
+    border:1px solid rgba(255,255,255,.3);
+    color:inherit;
+    width:44px;height:44px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .25s ease;
+    font-family:'Plus Jakarta Sans',sans-serif;
+  }
+  .navbtn:hover{ border-color:var(--rosa); color:var(--rosa); }
+  .navbtn:disabled{ opacity:.15; cursor:default; }
+  .navbtn:disabled:hover{ border-color:rgba(255,255,255,.3); color:inherit;}
+
+  #progressWrap{
+    position:fixed;
+    top:0;left:0;right:0;
+    height:2px;
+    background:rgba(255,255,255,.08);
+    z-index:60;
+  }
+  #progressBar{
+    height:100%;
+    width:0%;
+    background:var(--rosa);
+    transition:width .5s ease;
+  }
+  #stepLabel{
+    position:fixed;
+    top:20px; right:6vw;
+    font-size:11px;
+    letter-spacing:.15em;
+    color:var(--gold);
+    z-index:60;
+    font-weight:700;
+  }
+  #logoFixed{
+    position:fixed;
+    top:20px; left:6vw;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:15px;
+    letter-spacing:.05em;
+    color:var(--rosa);
+    z-index:60;
+  }
+
+  footer.foot{
+    position:absolute;
+    bottom:26px;
+    left:0;right:0;
+    text-align:center;
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    opacity:.35;
+  }
+
+  @media (max-width:640px){
+    .barleft{ left:-4vw; }
+    .section{ padding:9vh 6vw 14vh 6vw; }
+    .qnum{ font-size:60px; top:-30px;}
+    #chrome{ padding:0 6vw 3vh 6vw; }
+    .fieldgrid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progressWrap"><div id="progressBar"></div></div>
+<div id="logoFixed">Sombrero Rosa</div>
+<div id="stepLabel"></div>
+
+<div id="app"></div>
+
+<div id="chrome">
+  <button class="navbtn" id="prevBtn" aria-label="Anterior">←</button>
+  <button class="navbtn" id="nextBtn" aria-label="Siguiente">→</button>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — HubSpot Forms API
+   Reemplazar HUBSPOT_FORM_GUID por el guid del form que crees
+   en HubSpot (Marketing > Forms) con estos campos internos:
+   firstname, lastname, email, phone, company, message
+   ============================================================ */
+const HUBSPOT_CONFIG = {
+  portalId: "49258509",
+  formGuid: "c58deb6c-93ea-4146-b632-3a396983e3a3", // Form Sombrero Home
+  pageUrl: window.location.href,
+  pageName: "Briefing Aluminio Buenos Aires"
+};
+
+const questions = [
+  {
+    mod:"NÚCLEO", theme:"dark",
+    q:"¿A quién le habla tu marca?",
+    ctx:"Pensá en la persona real que atiende el teléfono, no en un cliente ideal de manual: ¿es un carpintero que llama urgido, un distribuidor que compra por volumen, alguien que arma su propia cortina?"
+  },
+  {
+    mod:"NAMING", theme:"light",
+    q:"¿Qué valores tiene que transmitir el nombre en el primer contacto?",
+    ctx:"Antes de que alguien sepa qué hacen, el nombre ya dice algo. ¿Qué querés que diga en ese primer segundo?"
+  },
+  {
+    mod:"NÚCLEO", theme:"dark",
+    q:"¿Qué problema concreto resuelve tu marca en la vida de esa persona?",
+    ctx:""
+  },
+  {
+    mod:"NAMING", theme:"light",
+    q:"¿Preferís sonidos suaves, contundentes, extranjeros o inventados?",
+    ctx:"No hace falta que sepas la respuesta técnica. Pensá en voz alta: si tuvieras que gritar el nombre en un galpón, ¿cómo suena?"
+  },
+  {
+    mod:"ESTRATEGIA", theme:"dark",
+    q:"¿Cuál es la promesa central de tu marca — lo que prometés siempre, pase lo que pase?",
+    ctx:""
+  },
+  {
+    mod:"NAMING", theme:"light",
+    q:"¿Hay nombres que admirés, de cualquier rubro, y por qué?",
+    ctx:"Pueden ser marcas de aluminio, de autos, de indumentaria — lo que te guste. Nos interesa el por qué, no el qué."
+  },
+  {
+    mod:"NÚCLEO", theme:"dark",
+    q:"¿Qué NO querés que se diga, sienta o asocie con tu marca bajo ningún punto de vista?",
+    ctx:""
+  },
+  {
+    mod:"IDENTIDAD VISUAL", theme:"light",
+    q:"¿Hay referencias visuales que te gusten, aunque no sean de tu rubro?",
+    ctx:"Marcas, artistas, arquitectura, autos, lo que sea. Mandanos fotos si tenés, acá simplemente contanos qué te atrae de esas referencias."
+  },
+  {
+    mod:"ESTRATEGIA", theme:"dark",
+    q:"¿Qué querés que sienta alguien cuando termina de interactuar con vos?",
+    ctx:""
+  },
+  {
+    mod:"IDENTIDAD VISUAL", theme:"light",
+    q:"¿Hay colores que definitivamente no van con vos, y por qué?",
+    ctx:""
+  },
+  {
+    mod:"NÚCLEO", theme:"dark",
+    q:"¿Cómo te imaginás tu marca dentro de 3 años?",
+    ctx:"Con las máquinas nuevas de pintura ya funcionando, con la distribución nacional consolidada — ¿cómo se ve y qué hace esa empresa?"
+  },
+  {
+    mod:"IDENTIDAD VISUAL", theme:"light",
+    q:"¿Cómo describirías tu marca si fuera una persona: cómo se viste, cómo habla, a dónde va?",
+    ctx:""
+  },
+  {
+    mod:"NÚCLEO", theme:"dark",
+    q:"¿Qué deseás vos, personalmente, de tu marca?",
+    ctx:"Distinto a lo anterior — no qué le da al cliente, sino qué te gustaría que te dé a vos."
+  },
+  {
+    mod:"CIERRE", theme:"light",
+    q:"¿Hay algo que no te preguntamos y que sentís que es importante que sepamos?",
+    ctx:""
+  },
+  {
+    mod:"CIERRE", theme:"dark",
+    q:"¿Cómo preferís que nos comuniquemos con vos durante el proceso?",
+    ctx:"WhatsApp, mail, llamadas — lo que te resulte más cómodo."
+  },
+];
+
+// current: -2 = cover, -1 = contact step, 0..N-1 = questions, N = closing
+let current = -2;
+const totalSteps = questions.length + 3; // cover + contact + questions + closing
+const app = document.getElementById('app');
+
+function buildCover(){
+  const el = document.createElement('div');
+  el.id = 'cover';
+  el.className = 'section active';
+  el.innerHTML = `
+    <div class="kicker">Sombrero Rosa · Estudio de marca</div>
+    <h1>Cuestionario de Briefing</h1>
+    <div class="client">Rebranding — Aluminio Buenos Aires · San Justo, Buenos Aires</div>
+    <p class="desc">Este cuestionario es el primer paso de nuestro proceso juntos. No hay respuestas correctas ni incorrectas — nos interesa entender cómo pensás vos sobre tu marca, no cómo creés que deberías pensar. Respondé con lo primero que te venga, sin filtros.</p>
+    <button class="startbtn" id="startBtn">Comenzar</button>
+    <footer class="foot">Naming · Estrategia de marca · Identidad visual</footer>
+  `;
+  return el;
+}
+
+function buildContactStep(){
+  const el = document.createElement('div');
+  el.id = 'contactStep';
+  el.className = 'section dark';
+  el.innerHTML = `
+    <div class="inner">
+      <div class="barleft"></div>
+      <div class="eyebrow"><span class="line"></span>ANTES DE EMPEZAR</div>
+      <h1>Contanos quién sos</h1>
+      <p class="lead">Estos datos nos sirven para identificar el brief y volver a contactarte por el proceso de naming e identidad.</p>
+      <div class="fieldgrid">
+        <div class="field">
+          <label for="f_firstname">Nombre *</label>
+          <input type="text" id="f_firstname" placeholder="Tu nombre" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="f_lastname">Apellido *</label>
+          <input type="text" id="f_lastname" placeholder="Tu apellido" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="fieldgrid">
+        <div class="field">
+          <label for="f_email">Email *</label>
+          <input type="email" id="f_email" placeholder="nombre@empresa.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="f_phone">Teléfono</label>
+          <input type="tel" id="f_phone" placeholder="+54 9 11 ..." autocomplete="tel">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f_company">Empresa *</label>
+        <input type="text" id="f_company" placeholder="Aluminio Buenos Aires" autocomplete="organization" value="Aluminio Buenos Aires">
+      </div>
+      <div class="fielderr" id="contactErr"></div>
+    </div>
+  `;
+  return el;
+}
+
+function buildClosing(){
+  const el = document.createElement('div');
+  el.id = 'closing';
+  el.className = 'section';
+  el.innerHTML = `
+    <div class="kicker" style="color:var(--gold)">Gracias</div>
+    <h1>Esto ya es un buen comienzo.</h1>
+    <p>Con esto empezamos a construir el terreno para el nombre y la identidad que van a acompañar el crecimiento de Aluminio Buenos Aires.</p>
+    <p>Nos vemos pronto para conversar sobre todo esto en profundidad.</p>
+    <button class="startbtn" id="sendBtn">Enviar respuestas</button>
+    <div id="sendStatus"></div>
+    <footer class="foot">Sombrero Rosa · Rebranding · 2026</footer>
+  `;
+  return el;
+}
+
+function buildQuestion(item, index){
+  const el = document.createElement('div');
+  el.className = 'section ' + item.theme;
+  el.innerHTML = `
+    <div class="inner">
+      <div class="barleft"></div>
+      <div class="qnum">${String(index+1).padStart(2,'0')}</div>
+      <div class="eyebrow"><span class="line"></span>${item.mod}</div>
+      <h1 class="question">${item.q}</h1>
+      ${item.ctx ? `<div class="context">${item.ctx}</div>` : ''}
+      <div class="answerzone">
+        <textarea class="answer" data-qindex="${index}" placeholder="Escribí tu respuesta acá (opcional para esta vista de presentación)"></textarea>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+// build all sections once
+const sections = [];
+sections.push(buildCover());
+sections.push(buildContactStep());
+questions.forEach((q,i)=> sections.push(buildQuestion(q,i)) );
+sections.push(buildClosing());
+sections.forEach(s=>app.appendChild(s));
+
+function sectionIndexFromCurrent(){
+  // maps current (-2..questions.length) to sections[] index (0..totalSteps-1)
+  return current + 2;
+}
+
+function render(){
+  const idx = sectionIndexFromCurrent();
+  sections.forEach((s,i)=>{
+    s.classList.toggle('active', i === idx);
+  });
+  const pct = (idx / (totalSteps-1)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('stepLabel').textContent =
+    idx === 0 ? '' : idx === totalSteps-1 ? 'Fin' : idx === 1 ? 'Datos' : `${idx-1} / ${questions.length}`;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === totalSteps-1;
+}
+
+function contactIsValid(){
+  const fn = document.getElementById('f_firstname')?.value.trim();
+  const ln = document.getElementById('f_lastname')?.value.trim();
+  const em = document.getElementById('f_email')?.value.trim();
+  const co = document.getElementById('f_company')?.value.trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em || '');
+  return !!(fn && ln && emailOk && co);
+}
+
+function go(delta){
+  // block leaving the contact step (moving forward) until it's valid
+  if(current === -1 && delta > 0 && !contactIsValid()){
+    document.getElementById('contactErr').textContent = 'Completá nombre, apellido, email y empresa para continuar.';
+    return;
+  }
+  const next = current + delta;
+  if(next < -2 || next > questions.length) return;
+  current = next;
+  render();
+}
+
+document.getElementById('nextBtn').addEventListener('click', ()=>go(1));
+document.getElementById('prevBtn').addEventListener('click', ()=>go(-1));
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowRight') go(1);
+  if(e.key === 'ArrowLeft') go(-1);
+});
+document.addEventListener('click', (e)=>{
+  if(e.target && e.target.id === 'startBtn'){ go(1); }
+  if(e.target && e.target.id === 'sendBtn'){ submitBrief(); }
+});
+
+/* ============================================================
+   Envío a HubSpot — Forms API (submission pública, sin token
+   expuesto del lado del cliente).
+   Endpoint: https://api.hsforms.com/submissions/v3/integration/submit/{portalId}/{formGuid}
+   ============================================================ */
+async function submitBrief(){
+  const statusEl = document.getElementById('sendStatus');
+  const sendBtn = document.getElementById('sendBtn');
+
+  if(HUBSPOT_CONFIG.formGuid === "REEMPLAZAR_CON_FORM_GUID"){
+    statusEl.className = 'err';
+    statusEl.textContent = 'Falta configurar el formGuid de HubSpot en el código (ver comentario CONFIG al inicio del script).';
+    return;
+  }
+
+  // Arma el contenido del brief como texto legible para el campo "message"
+  const briefText = questions.map((q, i) => {
+    const ta = document.querySelector(`textarea[data-qindex="${i}"]`);
+    const answer = ta ? ta.value.trim() : '';
+    return `${String(i+1).padStart(2,'0')}. ${q.q}\n${answer || '(sin responder)'}`;
+  }).join('\n\n');
+
+  const payload = {
+    fields: [
+      { objectTypeId: "0-1", name: "firstname", value: document.getElementById('f_firstname').value.trim() },
+      { objectTypeId: "0-1", name: "lastname", value: document.getElementById('f_lastname').value.trim() },
+      { objectTypeId: "0-1", name: "email", value: document.getElementById('f_email').value.trim() },
+      { objectTypeId: "0-1", name: "hs_whatsapp_phone_number", value: document.getElementById('f_phone').value.trim() },
+      { objectTypeId: "0-1", name: "company", value: document.getElementById('f_company').value.trim() },
+      { objectTypeId: "0-1", name: "message", value: briefText }
+    ],
+    context: {
+      pageUri: HUBSPOT_CONFIG.pageUrl,
+      pageName: HUBSPOT_CONFIG.pageName
+    }
+  };
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Enviando...';
+  statusEl.className = '';
+  statusEl.textContent = '';
+
+  try {
+    const res = await fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_CONFIG.portalId}/${HUBSPOT_CONFIG.formGuid}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if(!res.ok){
+      const errBody = await res.text();
+      throw new Error(`HubSpot ${res.status}: ${errBody}`);
+    }
+
+    statusEl.className = 'ok';
+    statusEl.textContent = '¡Recibido! Gracias por completar el brief.';
+    sendBtn.textContent = 'Enviado ✓';
+  } catch(err){
+    statusEl.className = 'err';
+    statusEl.textContent = 'Hubo un problema al enviar. Probá de nuevo en unos segundos.';
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Enviar respuestas';
+    console.error(err);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
