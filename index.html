@@ -64,7 +64,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:8vh 8vw;
+    padding:calc(60px + 6vh) 8vw 8vh 8vw;
     opacity:0;
     pointer-events:none;
     transform:translateY(24px);
@@ -264,8 +264,10 @@
   }
   .navbtn{
     pointer-events:auto;
-    background:none;
-    border:1.5px solid var(--border-on-dark);
+    background:rgba(2,2,2,.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1.5px solid rgba(255,255,255,.18);
     color:var(--bone);
     width:44px;height:44px;
     border-radius:var(--r-pill);
@@ -277,14 +279,28 @@
   }
   .navbtn:hover{ border-color:var(--rosa); color:var(--rosa-300); }
   .navbtn:disabled{ opacity:.15; cursor:default; }
-  .navbtn:disabled:hover{ border-color:var(--border-on-dark); color:var(--bone); }
+  .navbtn:disabled:hover{ border-color:rgba(255,255,255,.18); color:var(--bone); }
 
+  #topbar{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:65;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:60px;
+    padding:0 6vw;
+    background:rgba(2,2,2,.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
   #progressWrap{
     position:fixed;
     top:0;left:0;right:0;
     height:2px;
     background:rgba(255,255,255,.08);
-    z-index:60;
+    z-index:70;
   }
   #progressBar{
     height:100%;
@@ -293,24 +309,18 @@
     transition:width .5s var(--ease-out);
   }
   #stepLabel{
-    position:fixed;
-    top:20px; right:6vw;
     font-size:11px;
     font-weight:600;
     letter-spacing:.14em;
     text-transform:uppercase;
     color:var(--rosa-300);
-    z-index:60;
   }
   #logoFixed{
-    position:fixed;
-    top:18px; left:6vw;
     font-family:var(--font-sans);
     font-weight:700;
     font-size:15px;
     letter-spacing:var(--tr-snug);
     color:var(--bone);
-    z-index:60;
   }
   #logoFixed em{ font-style:italic; font-weight:600; color:var(--rosa-300); }
 
@@ -328,7 +338,7 @@
   .light footer.foot{ color:var(--ink-soft); opacity:.6; }
 
   @media (max-width:640px){
-    .section{ padding:9vh 6vw 14vh 6vw; }
+    .section{ padding:calc(60px + 5vh) 6vw 14vh 6vw; }
     .qnum{ font-size:52px; top:-22px;}
     #chrome{ padding:0 6vw 3vh 6vw; }
     .fieldgrid{ grid-template-columns:1fr; }
@@ -338,8 +348,10 @@
 <body>
 
 <div id="progressWrap"><div id="progressBar"></div></div>
-<div id="logoFixed">Sombrero <em>Rosa</em></div>
-<div id="stepLabel"></div>
+<div id="topbar">
+  <div id="logoFixed">Sombrero <em>Rosa</em></div>
+  <div id="stepLabel"></div>
+</div>
 
 <div id="app"></div>
 
@@ -366,7 +378,7 @@ const questions = [
   {
     mod:"NÚCLEO", theme:"dark",
     q:"¿A quién le habla tu marca?",
-    ctx:"Pensá en la persona real que atiende el teléfono, no en un cliente ideal de manual: ¿es un carpintero que llama urgido, un distribuidor que compra por volumen, alguien que arma su propia cortina?"
+    ctx:"Pensá en la persona real que atiende el teléfono, no en un cliente ideal de manual: ¿es una casa de aberturas, un carpintero que llama urgido, un distribuidor que compra por volumen?"
   },
   {
     mod:"NAMING", theme:"light",
