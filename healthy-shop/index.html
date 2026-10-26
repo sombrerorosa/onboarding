@@ -441,8 +441,9 @@
      ===================================================================== */
   var HS = {
     portalId: '49258509',
-    formGuid: 'REEMPLAZAR_CON_GUID_DEL_FORM_HEALTHY_SHOP',
-    clientName: 'Healthy Shop'
+    formGuid: 'c58deb6c-93ea-4146-b632-3a396983e3a3', // Form Sombrero Home (el mismo de Aluminios BA)
+    clientName: 'Healthy Shop',
+    pageName: 'Briefing Healthy Shop'                 // queda en el envío junto a la URL (pageUri)
   };
   var FIELD_MAP = {
     firstname: 'firstname',
@@ -450,7 +451,8 @@
     email:     'email',
     company:   'company',
     whatsapp:  'hs_whatsapp_phone_number',
-    brief:     'message'          // todo el brief consolidado, en texto legible
+    brief:     'message',         // todo el brief consolidado, en texto legible
+    origen:    null               // propiedad propia para segmentar (ej. 'origen_brief'); null = no se envía
   };
 
   /* Etiquetas para armar el brief consolidado (orden = orden del cuestionario) */
@@ -592,10 +594,11 @@
     add(FIELD_MAP.company, val('empresa') || HS.clientName);
     add(FIELD_MAP.whatsapp, val('whatsapp'));
     add(FIELD_MAP.brief, buildBrief());
+    if (FIELD_MAP.origen) add(FIELD_MAP.origen, 'Briefing ' + HS.clientName);
     var payload = {
       submittedAt: Date.now(),
       fields: fields,
-      context: { pageUri: window.location.href, pageName: document.title }
+      context: { pageUri: window.location.href, pageName: HS.pageName }
     };
     var hutk = getCookie('hubspotutk');
     if (hutk) payload.context.hutk = hutk;
