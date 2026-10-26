@@ -7,3 +7,4 @@ Cada cliente tiene su propia carpeta:
 | Carpeta | Contenido |
 |---|---|
 | [`aluminios-ba/`](aluminios-ba/) | Cuestionario de briefing — Aluminios BA |
+| [`healthy-shop/`](healthy-shop/) | Cuestionario de briefing — Healthy Shop (formulario de HubSpot pendiente) |

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sombrero Rosa | Cuestionario de Briefing · Healthy Shop</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --rosa: #D5848E;
+    --rosa-soft: #F1D6D9;
+    --bone: #F2F2F0;
+    --grafito: #141616;
+    --grafito-soft: #4a4d4d;
+    --line: rgba(20, 22, 22, .18);
+    --radius: 10px;
+    --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    font-weight: 400;
+    color: var(--grafito);
+    background: var(--bone);
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+
+  /* ---------- Header + progress ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bone);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: 760px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .brand svg { width: 38px; height: auto; transition: transform .6s cubic-bezier(.3,.7,.2,1); transform-origin: 50% 90%; }
+  .brand-name { font-weight: 500; font-size: 1rem; letter-spacing: .01em; }
+  .brand-name em { font-style: normal; color: var(--rosa); }
+  .counter { font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--grafito-soft); white-space: nowrap; }
+  .counter b { color: var(--rosa); font-weight: 600; }
+  .progress { height: 3px; background: var(--line); }
+  .progress > span { display: block; height: 100%; width: 0; background: var(--rosa); transition: width .4s ease; }
+
+  /* ---------- Layout ---------- */
+  main { max-width: 760px; margin: 0 auto; padding: 56px 24px 120px; }
+  .step { display: none; animation: rise .45s ease both; }
+  .step.active { display: block; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .step { animation: none; } .brand svg, .progress > span { transition: none; } }
+
+  .eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--grafito-soft); font-weight: 500; margin: 0 0 18px; }
+  h1, h2 { font-weight: 500; line-height: 1.15; letter-spacing: -.015em; margin: 0 0 14px; }
+  h1 { font-size: clamp(2.6rem, 8vw, 4.2rem); font-weight: 300; }
+  h2 { font-size: clamp(1.5rem, 4.4vw, 2.1rem); }
+  .rule { width: 72px; height: 3px; background: var(--rosa); border: 0; margin: 26px 0; }
+  .lead { font-size: 1.02rem; color: var(--grafito-soft); max-width: 56ch; margin: 0 0 14px; }
+  .hint { font-style: italic; font-weight: 300; font-size: 1rem; color: var(--grafito-soft); margin: 0 0 28px; max-width: 60ch; }
+  .meta { font-size: .85rem; color: var(--grafito-soft); margin-top: 28px; }
+
+  /* ---------- Fields ---------- */
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { padding: 0; }
+  .field { margin: 0 0 26px; scroll-margin-top: 90px; }
+  .field > label, .field > .label, legend.label {
+    display: block; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+    font-weight: 500; color: var(--grafito-soft); margin-bottom: 8px;
+  }
+  .subq { font-size: 1.1rem; font-weight: 500; margin: 36px 0 4px; line-height: 1.3; }
+  .subq-hint { font-size: .88rem; color: var(--grafito-soft); margin: 0 0 16px; }
+
+  input[type=text], input[type=email], input[type=tel], textarea {
+    width: 100%; font: inherit; font-size: 1rem; color: var(--grafito);
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 13px 15px; transition: border-color .2s, box-shadow .2s;
+  }
+  textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+  input::placeholder, textarea::placeholder { color: #9a9c9c; font-weight: 300; }
+  input:focus, textarea:focus { outline: none; border-color: var(--rosa); box-shadow: 0 0 0 3px var(--rosa-soft); }
+
+  .options { display: flex; flex-wrap: wrap; gap: 10px; }
+  .opt { position: relative; }
+  .opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .opt span {
+    display: inline-block; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px;
+    background: #fff; font-size: .93rem; transition: all .18s; user-select: none;
+  }
+  .opt input:hover + span { border-color: var(--rosa); }
+  .opt input:focus-visible + span { box-shadow: 0 0 0 3px var(--rosa-soft); border-color: var(--rosa); }
+  .opt input:checked + span { background: var(--grafito); color: var(--bone); border-color: var(--grafito); }
+  .limit-note { font-size: .82rem; color: var(--rosa); min-height: 1.2em; margin-top: 10px; }
+
+  .two { display: grid; grid-template-columns: 1fr; gap: 0 18px; }
+  @media (min-width: 640px) { .two { grid-template-columns: 1fr 1fr; } }
+
+  .error { color: #b3263b; font-size: .85rem; margin-top: 6px; display: none; }
+  .field.invalid .error { display: block; }
+  .field.invalid input { border-color: #b3263b; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* ---------- Nav ---------- */
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 44px; }
+  .btn {
+    font: inherit; font-weight: 500; font-size: .95rem; cursor: pointer; border-radius: 999px;
+    padding: 13px 28px; border: 1px solid var(--grafito); transition: all .2s;
+  }
+  .btn-primary { background: var(--grafito); color: var(--bone); }
+  .btn-primary:hover { background: var(--rosa); border-color: var(--rosa); color: var(--grafito); }
+  .btn-ghost { background: transparent; color: var(--grafito); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--grafito); }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--rosa-soft); }
+  .btn[disabled] { opacity: .55; cursor: progress; }
+  .nav .spacer { flex: 1; }
+  .submit-error { color: #b3263b; font-size: .9rem; margin-top: 16px; display: none; }
+  .submit-error.show { display: block; }
+
+  /* ---------- Thank you ---------- */
+  .final-hat { width: 150px; margin-bottom: 30px; }
+  footer.foot { max-width: 760px; margin: 0 auto; padding: 0 24px 40px; font-size: .8rem; letter-spacing: .1em; color: var(--grafito-soft); }
+</style>
+</head>
+
+<body>
+
+<!-- Logo (sombrero_rosa_logo_vector_v3), definido una sola vez y reutilizado -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="hat" viewBox="0 0 1993 1139">
+      <path fill="#D5848E" d="M 304.655 445.879 C 272.619 447.714, 238.871 450.430, 208.052 458.623 C 177.233 466.816, 145.650 477.570, 119.740 495.035 C 93.830 512.500, 68.465 536.701, 52.589 563.415 C 36.713 590.128, 26.020 624.359, 24.483 655.317 C 22.947 686.276, 30.334 721.052, 43.370 749.167 C 56.405 777.283, 79.125 802.916, 102.696 824.011 C 126.268 845.107, 155.925 861.951, 184.800 875.739 C 213.675 889.526, 244.760 899.878, 275.944 906.736 C 307.129 913.595, 340.122 917.595, 371.907 916.891 C 403.692 916.187, 438.989 911.923, 466.656 902.513 C 494.322 893.104, 541.241 862.235, 537.908 860.432 C 534.574 858.630, 477.947 887.175, 446.652 891.699 C 415.357 896.224, 381.634 892.677, 350.136 887.580 C 318.638 882.483, 287.200 873.286, 257.666 861.119 C 228.133 848.952, 198.518 833.598, 172.936 814.578 C 147.355 795.559, 121.012 773.173, 104.176 747.004 C 87.340 720.834, 73.804 688.064, 71.921 657.564 C 70.038 627.063, 77.425 589.806, 92.878 564.001 C 108.331 538.196, 137.131 517.076, 164.639 502.734 C 192.146 488.392, 226.330 482.402, 257.923 477.951 C 289.517 473.500, 322.076 474.560, 354.200 476.030 C 386.324 477.500, 418.894 481.398, 450.665 486.771 C 482.435 492.144, 514.217 498.764, 544.821 508.266 C 575.426 517.768, 605.434 529.756, 634.291 543.784 C 663.148 557.811, 691.074 574.659, 717.963 592.434 C 744.851 610.208, 770.509 630.203, 795.620 650.432 C 820.732 670.661, 844.478 692.479, 868.631 713.810 C 892.783 735.141, 916.198 757.307, 940.536 778.420 C 964.873 799.533, 989.434 820.439, 1014.656 840.487 C 1039.878 860.535, 1065.629 879.999, 1091.868 898.709 C 1118.106 917.419, 1144.844 935.536, 1172.088 952.748 C 1199.331 969.960, 1227.058 986.530, 1255.328 1001.982 C 1283.598 1017.434, 1312.359 1032.251, 1341.708 1045.459 C 1371.056 1058.667, 1400.908 1071.217, 1431.419 1081.230 C 1461.931 1091.242, 1493.181 1100.038, 1524.774 1105.535 C 1556.368 1111.032, 1589.003 1114.698, 1620.982 1114.212 C 1652.962 1113.725, 1685.670 1110.431, 1716.651 1102.614 C 1747.631 1094.798, 1779.123 1082.933, 1806.866 1067.311 C 1834.609 1051.688, 1861.445 1031.856, 1883.109 1008.880 C 1904.773 985.904, 1923.281 958.152, 1936.849 929.455 C 1950.417 900.758, 1959.837 868.205, 1964.519 836.700 C 1969.201 805.194, 1969.122 771.929, 1964.940 740.420 C 1960.759 708.910, 1951.748 677.085, 1939.430 647.642 C 1927.112 618.199, 1910.056 589.267, 1891.033 563.761 C 1872.010 538.255, 1840.746 507.458, 1825.290 494.606 C 1809.834 481.754, 1792.111 475.882, 1798.295 486.649 C 1804.478 497.417, 1844.605 532.730, 1862.392 559.212 C 1880.180 585.693, 1894.159 615.507, 1905.020 645.537 C 1915.881 675.568, 1923.983 707.727, 1927.560 739.396 C 1931.136 771.066, 1931.651 804.154, 1926.478 835.553 C 1921.306 866.952, 1911.009 899.438, 1896.523 927.792 C 1882.036 956.145, 1862.294 983.976, 1839.559 1005.673 C 1816.823 1027.369, 1788.954 1045.278, 1760.111 1057.970 C 1731.268 1070.662, 1698.246 1078.084, 1666.501 1081.826 C 1634.756 1085.568, 1601.417 1084.272, 1569.641 1080.424 C 1537.864 1076.576, 1506.513 1068.182, 1475.841 1058.737 C 1445.170 1049.292, 1415.093 1036.793, 1385.613 1023.753 C 1356.133 1010.712, 1327.279 995.911, 1298.960 980.496 C 1270.642 965.081, 1242.910 948.431, 1215.701 931.262 C 1188.493 914.094, 1161.825 896.193, 1135.707 877.484 C 1109.588 858.774, 1084.050 839.279, 1058.992 819.006 C 1033.935 798.734, 1009.685 777.233, 985.362 755.848 C 961.038 734.463, 937.337 712.114, 913.050 690.696 C 888.764 669.279, 864.698 647.529, 839.644 627.344 C 814.590 607.159, 789.353 587.273, 762.726 569.585 C 736.099 551.898, 708.696 535.293, 679.880 521.217 C 651.065 507.141, 620.565 495.182, 589.834 485.128 C 559.104 475.073, 527.091 467.144, 495.497 460.891 C 463.904 454.638, 432.079 450.114, 400.272 447.612 C 368.465 445.110, 336.692 444.044, 304.655 445.879 Z"/>
+      <path fill="#D5848E" d="M 728.115 35.895 C 712.370 36.881, 695.313 39.191, 681.128 45.381 C 666.943 51.572, 653.354 61.541, 643.006 73.037 C 632.658 84.534, 624.888 99.701, 619.042 114.358 C 613.196 129.014, 610.331 145.287, 607.927 160.977 C 605.523 176.667, 604.919 192.574, 604.620 208.497 C 604.320 224.421, 605.026 240.630, 606.132 256.518 C 607.238 272.407, 608.047 289.590, 611.254 303.829 C 614.460 318.067, 621.746 343.604, 625.371 341.950 C 628.997 340.297, 630.986 309.819, 633.007 293.909 C 635.028 277.998, 635.664 262.309, 637.499 246.488 C 639.335 230.668, 641.305 214.715, 644.021 198.988 C 646.737 183.261, 648.783 167.169, 653.794 152.128 C 658.805 137.088, 664.569 120.682, 674.087 108.746 C 683.605 96.809, 696.775 85.418, 710.902 80.511 C 725.028 75.604, 742.964 78.203, 758.847 79.305 C 774.729 80.407, 790.590 84.050, 806.194 87.126 C 821.798 90.202, 837.038 93.873, 852.470 97.761 C 867.903 101.650, 883.389 106.107, 898.789 110.456 C 914.189 114.805, 929.526 119.444, 944.869 123.856 C 960.211 128.268, 975.483 132.773, 990.844 136.926 C 1006.204 141.080, 1021.547 145.178, 1037.034 148.776 C 1052.520 152.373, 1068.046 155.758, 1083.760 158.513 C 1099.475 161.268, 1115.619 162.967, 1131.319 165.304 C 1147.019 167.640, 1162.387 170.140, 1177.963 172.534 C 1193.540 174.928, 1223.118 181.297, 1224.778 179.667 C 1226.438 178.037, 1201.628 168.154, 1187.925 162.752 C 1174.222 157.349, 1157.684 152.359, 1142.559 147.254 C 1127.434 142.149, 1112.337 137.009, 1097.174 132.121 C 1082.011 127.233, 1066.785 122.641, 1051.579 117.926 C 1036.373 113.210, 1021.156 108.530, 1005.935 103.829 C 990.714 99.129, 975.501 94.373, 960.254 89.723 C 945.008 85.073, 929.755 80.435, 914.458 75.929 C 899.161 71.424, 883.844 66.993, 868.474 62.690 C 853.104 58.388, 837.718 53.986, 822.240 50.115 C 806.761 46.244, 791.291 41.835, 775.603 39.465 C 759.916 37.095, 743.861 34.909, 728.115 35.895 Z"/>
+      <path fill="#D5848E" d="M 1148.098 24.517 C 1128.390 24.709, 1108.485 25.972, 1088.945 27.701 C 1069.406 29.430, 1033.244 31.166, 1030.859 34.892 C 1028.474 38.618, 1057.535 46.445, 1074.638 50.059 C 1091.741 53.672, 1113.791 54.766, 1133.479 56.574 C 1153.168 58.381, 1173.093 58.941, 1192.769 60.905 C 1212.445 62.869, 1232.209 64.472, 1251.537 68.359 C 1270.865 72.245, 1290.606 76.752, 1308.735 84.224 C 1326.864 91.695, 1344.963 101.164, 1360.310 113.186 C 1375.657 125.209, 1389.640 140.383, 1400.817 156.358 C 1411.994 172.333, 1419.986 190.802, 1427.370 209.037 C 1434.754 227.272, 1439.734 246.714, 1445.120 265.767 C 1450.506 284.819, 1455.200 304.074, 1459.684 323.351 C 1464.169 342.628, 1468.169 362.020, 1472.030 381.427 C 1475.891 400.835, 1479.382 420.325, 1482.851 439.797 C 1486.319 459.270, 1489.546 478.787, 1492.840 498.262 C 1496.134 517.737, 1499.887 537.041, 1502.614 556.648 C 1505.341 576.254, 1509.600 596.363, 1509.200 615.902 C 1508.801 635.442, 1508.662 657.544, 1500.217 673.884 C 1491.772 690.223, 1474.981 704.285, 1458.529 713.940 C 1442.076 723.596, 1420.299 725.889, 1401.500 731.818 C 1382.701 737.747, 1363.999 742.513, 1345.734 749.515 C 1327.470 756.518, 1292.255 770.259, 1291.912 773.836 C 1291.570 777.412, 1325.298 773.339, 1343.676 770.975 C 1362.055 768.610, 1382.769 763.424, 1402.183 759.649 C 1421.596 755.875, 1440.894 752.896, 1460.156 748.325 C 1479.418 743.754, 1501.879 741.827, 1517.754 732.223 C 1533.629 722.619, 1550.129 707.426, 1555.406 690.699 C 1560.684 673.973, 1551.737 651.483, 1549.417 631.865 C 1547.097 612.248, 1543.991 592.632, 1541.486 572.995 C 1538.981 553.357, 1536.816 533.662, 1534.386 514.041 C 1531.957 494.420, 1529.559 474.818, 1526.910 455.270 C 1524.261 435.722, 1521.636 416.199, 1518.492 396.752 C 1515.348 377.306, 1512.071 357.899, 1508.047 338.593 C 1504.022 319.287, 1499.698 299.948, 1494.346 280.917 C 1488.994 261.886, 1483.153 242.805, 1475.935 224.407 C 1468.718 206.009, 1460.711 187.745, 1451.042 170.528 C 1441.372 153.310, 1430.552 136.110, 1417.918 121.102 C 1405.285 106.095, 1391.064 91.863, 1375.242 80.481 C 1359.420 69.099, 1341.215 60.282, 1322.987 52.810 C 1304.759 45.338, 1285.174 40.024, 1265.875 35.648 C 1246.576 31.271, 1226.822 28.407, 1207.193 26.552 C 1187.563 24.697, 1167.806 24.326, 1148.098 24.517 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="https://sombrerorosa.com" target="_blank" rel="noopener">
+      <svg id="brandHat" viewBox="0 0 1993 1139" aria-hidden="true"><use href="#hat"/></svg>
+      <span class="brand-name">Sombrero <em>Rosa</em></span>
+    </a>
+    <div class="counter" id="counter" aria-live="polite"></div>
+  </div>
+  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Avance del cuestionario"><span id="bar"></span></div>
+</header>
+
+<main>
+<form id="briefForm" novalidate autocomplete="on">
+
+  <!-- Honeypot anti-spam -->
+  <div class="hp" aria-hidden="true">
+    <label>No completar este campo <input type="text" name="website_hp" tabindex="-1" autocomplete="off"></label>
+  </div>
+
+  <!-- ============ INTRO ============ -->
+  <section class="step active" data-step="0" data-section="Intro">
+    <p class="eyebrow">Cuestionario de briefing</p>
+    <h1>Healthy Shop</h1>
+    <hr class="rule">
+    <p class="lead">Este cuestionario es el primer paso de nuestro proceso juntos. No hay respuestas correctas ni incorrectas: lo que nos interesa es entender cómo pensás vos sobre tu marca y tu negocio, no cómo creés que deberías pensar.</p>
+    <p class="lead">Respondé con lo primero que te venga, sin filtros. Cuanto más honesto, más útil. Un número aproximado alcanza en todo lo que sea de números, y las estimaciones nos sirven para esta primera instancia.</p>
+    <p class="meta">14 preguntas · unos 10 minutos · podés saltear lo que no sepas</p>
+    <div class="nav">
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-primary" data-next>Empezar</button>
+    </div>
+  </section>
+
+  <!-- ============ TU MARCA ============ -->
+  <section class="step" data-step="1" data-section="Tu marca">
+    <p class="eyebrow">Tu marca</p>
+    <h2>¿A quién le habla Healthy Shop?</h2>
+    <p class="hint">Pensá en las personas que hoy te compran de verdad, no en las que te gustaría que te compren.</p>
+    <div class="field"><label for="q_publico" class="sr-only" hidden>Respuesta</label>
+      <textarea id="q_publico" name="publico" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="2" data-section="Tu marca">
+    <p class="eyebrow">Tu marca</p>
+    <h2>¿Qué problema concreto resolvés en la vida de esa persona?</h2>
+    <p class="hint">Puede ser algo chiquito y cotidiano. Muchas veces ahí está lo más revelador.</p>
+    <div class="field"><label for="q_problema" hidden>Respuesta</label>
+      <textarea id="q_problema" name="problema" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="3" data-section="Tu marca">
+    <p class="eyebrow">Tu marca</p>
+    <h2>¿Qué no querés que se diga, sienta o asocie con tu marca?</h2>
+    <p class="hint">Lo que bajo ningún punto de vista querés ver ligado a Healthy Shop.</p>
+    <div class="field"><label for="q_no_asociar" hidden>Respuesta</label>
+      <textarea id="q_no_asociar" name="no_asociar" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="4" data-section="Tu marca">
+    <p class="eyebrow">Tu marca</p>
+    <h2>¿Qué deseás vos de tu marca?</h2>
+    <p class="hint">No para el negocio: para vos. Qué te gustaría que Healthy Shop te dé a vos.</p>
+    <div class="field"><label for="q_deseo" hidden>Respuesta</label>
+      <textarea id="q_deseo" name="deseo" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="5" data-section="Tu marca">
+    <p class="eyebrow">Tu marca</p>
+    <h2>¿Cómo te imaginás Healthy Shop dentro de tres años?</h2>
+    <p class="hint">Cómo se ve, cómo se siente, dónde está y quién la elige.</p>
+    <div class="field"><label for="q_tres_anios" hidden>Respuesta</label>
+      <textarea id="q_tres_anios" name="tres_anios" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <!-- ============ TU NEGOCIO ============ -->
+  <section class="step" data-step="6" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Dónde te encontramos hoy en internet?</h2>
+    <p class="hint">Esto es lo que encontramos nosotros. Corregilo o sumá lo que falte.</p>
+    <div class="two">
+      <div class="field"><label for="q_web">Página web</label><input type="text" id="q_web" name="web" value="https://www.healthyshop.com.ar" inputmode="url"></div>
+      <div class="field"><label for="q_instagram">Instagram</label><input type="text" id="q_instagram" name="instagram" value="@healthyshop.distribuidora"></div>
+      <div class="field"><label for="q_facebook">Facebook</label><input type="text" id="q_facebook" name="facebook" value="facebook.com/profile.php?id=61579602901300"></div>
+      <div class="field"><label for="q_tiktok">TikTok (si corresponde)</label><input type="text" id="q_tiktok" name="tiktok" placeholder="@usuario"></div>
+      <div class="field"><label for="q_mercadolibre">Mercado Libre</label><input type="text" id="q_mercadolibre" name="mercadolibre" placeholder="Link a tu tienda oficial o usuario"></div>
+      <div class="field"><label for="q_otras_redes">Otras redes o perfiles</label><input type="text" id="q_otras_redes" name="otras_redes" placeholder="YouTube, WhatsApp Business, otros…"></div>
+    </div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="7" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Por dónde vendés hoy?</h2>
+    <p class="hint">Marcá todos los canales que usás, y contanos cuál es el que más pesa.</p>
+    <fieldset class="field">
+      <legend class="label">Canales de venta</legend>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="canales" value="Tienda física / local presencial"><span>Tienda física</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="Tienda online propia"><span>Tienda online propia</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="Mercado Libre"><span>Mercado Libre</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="Instagram / Facebook"><span>Instagram / Facebook</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="WhatsApp"><span>WhatsApp</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="PedidosYa u otras plataformas"><span>PedidosYa u otras plataformas</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="Venta mayorista / revendedores"><span>Venta mayorista / revendedores</span></label>
+        <label class="opt"><input type="checkbox" name="canales" value="Otros"><span>Otros</span></label>
+      </div>
+    </fieldset>
+    <div class="field"><label for="q_canal_principal">¿Cuál es el que más pesa? ¿Hay otros?</label>
+      <input type="text" id="q_canal_principal" name="canal_principal" placeholder="Por ejemplo: el 60% viene de Mercado Libre"></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="8" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Cuáles son los productos que más salen?</h2>
+    <p class="hint">Y cuáles son marca propia, si hay.</p>
+    <div class="field"><label for="q_productos_top">Los que más se venden</label>
+      <textarea id="q_productos_top" name="productos_top" style="min-height:110px" placeholder="Productos, categorías, marcas propias…"></textarea></div>
+    <div class="field"><label for="q_productos_impulsar">¿Cuáles les interesa impulsar prioritariamente?</label>
+      <textarea id="q_productos_impulsar" name="productos_impulsar" style="min-height:110px" placeholder="Si conocés cuáles son los más rentables, contanos también."></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="9" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Hacés publicidad en medios digitales?</h2>
+    <p class="hint">Si hoy no hacés, también es una respuesta valiosa.</p>
+    <fieldset class="field">
+      <legend class="label">Frecuencia</legend>
+      <div class="options">
+        <label class="opt"><input type="radio" name="publicidad_frecuencia" value="Sí, de forma constante"><span>Sí, de forma constante</span></label>
+        <label class="opt"><input type="radio" name="publicidad_frecuencia" value="A veces"><span>A veces</span></label>
+        <label class="opt"><input type="radio" name="publicidad_frecuencia" value="No, todavía no"><span>No, todavía no</span></label>
+      </div>
+    </fieldset>
+    <fieldset class="field">
+      <legend class="label">¿Dónde?</legend>
+      <div class="options">
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="Meta Ads (Instagram / Facebook)"><span>Meta Ads (Instagram / Facebook)</span></label>
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="Google Ads"><span>Google Ads</span></label>
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="Mercado Libre Ads"><span>Mercado Libre Ads</span></label>
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="TikTok Ads"><span>TikTok Ads</span></label>
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="Influencers"><span>Influencers</span></label>
+        <label class="opt"><input type="checkbox" name="publicidad_medios" value="Otros"><span>Otros</span></label>
+      </div>
+    </fieldset>
+    <div class="field"><label for="q_inversion">¿Cuánto invertís por mes, más o menos?</label>
+      <input type="text" id="q_inversion" name="inversion_mensual" placeholder="Monto o rango, en pesos o en dólares si pagás en dólares"></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="10" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Cuánto vendés por mes en cada canal?</h2>
+    <p class="hint">Un número aproximado alcanza. Lo usamos solo para dimensionar bien nuestra propuesta. Si no tenés los importes, contanos qué canales venden más y cuáles menos.</p>
+    <div class="two">
+      <div class="field"><label for="q_v_web">Tienda online propia</label><input type="text" id="q_v_web" name="ventas_web" placeholder="$ por mes, o cantidad de pedidos"></div>
+      <div class="field"><label for="q_v_ml">Mercado Libre</label><input type="text" id="q_v_ml" name="ventas_ml" placeholder="$ por mes, o cantidad de pedidos"></div>
+      <div class="field"><label for="q_v_redes">Redes sociales / WhatsApp</label><input type="text" id="q_v_redes" name="ventas_redes" placeholder="$ por mes, o cantidad de pedidos"></div>
+      <div class="field"><label for="q_v_fisica">Tienda física</label><input type="text" id="q_v_fisica" name="ventas_fisica" placeholder="$ por mes, o cantidad de pedidos"></div>
+      <div class="field"><label for="q_v_otros">Otros canales (mayorista, plataformas…)</label><input type="text" id="q_v_otros" name="ventas_otros" placeholder="$ por mes, o cantidad de pedidos"></div>
+    </div>
+
+    <p class="subq">¿Cuánto gasta en promedio cada cliente por compra?</p>
+    <p class="subq-hint">Es el ticket promedio. Si cambia mucho entre minorista y mayorista, contanos los dos.</p>
+    <fieldset class="field">
+      <legend class="label" hidden>Ticket promedio</legend>
+      <div class="options">
+        <label class="opt"><input type="radio" name="ticket_promedio" value="Menos de $15.000"><span>Menos de $15.000</span></label>
+        <label class="opt"><input type="radio" name="ticket_promedio" value="Entre $15.000 y $30.000"><span>Entre $15.000 y $30.000</span></label>
+        <label class="opt"><input type="radio" name="ticket_promedio" value="Entre $30.000 y $60.000"><span>Entre $30.000 y $60.000</span></label>
+        <label class="opt"><input type="radio" name="ticket_promedio" value="Más de $60.000"><span>Más de $60.000</span></label>
+        <label class="opt"><input type="radio" name="ticket_promedio" value="No contamos con ese dato"><span>No tenemos el dato</span></label>
+      </div>
+    </fieldset>
+    <div class="field"><label for="q_ticket_nota">Minorista y mayorista (si cambia)</label>
+      <input type="text" id="q_ticket_nota" name="ticket_nota" placeholder="Por ejemplo: minorista $20.000, mayorista $150.000"></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="11" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Qué dificultades identificaste hasta ahora?</h2>
+    <p class="hint">Las que sientas, aunque todavía no sepas bien de dónde vienen. Podés marcar hasta tres.</p>
+    <fieldset class="field">
+      <legend class="label">Las principales</legend>
+      <div class="options" id="dificultadesOpts">
+        <label class="opt"><input type="checkbox" name="dificultades" value="Conseguir nuevos clientes"><span>Conseguir nuevos clientes</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Aumentar las ventas de la tienda online"><span>Aumentar las ventas de la tienda online</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Mejorar los resultados de la publicidad"><span>Mejorar los resultados de la publicidad</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Aumentar la rentabilidad de las ventas"><span>Aumentar la rentabilidad</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Generar más ventas recurrentes"><span>Generar más ventas recurrentes</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Diferenciarnos de la competencia"><span>Diferenciarnos de la competencia</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Mejorar la comunicación y el posicionamiento de marca"><span>Comunicación y posicionamiento de marca</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Integrar y gestionar mejor los distintos canales de venta"><span>Integrar y gestionar mejor los canales</span></label>
+        <label class="opt"><input type="checkbox" name="dificultades" value="Otro desafío"><span>Otro desafío</span></label>
+      </div>
+      <div class="limit-note" id="limitNote" aria-live="polite"></div>
+    </fieldset>
+    <div class="field"><label for="q_dificultades_texto">Contanos con tus palabras</label>
+      <textarea id="q_dificultades_texto" name="dificultades_texto" style="min-height:120px" placeholder="Lo que te preocupa, lo que no te cierra, lo que sentís que se traba…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <section class="step" data-step="12" data-section="Tu negocio">
+    <p class="eyebrow">Tu negocio</p>
+    <h2>¿Qué acciones de marketing hicieron hasta ahora y cuáles les dieron mejores resultados?</h2>
+    <p class="hint">Campañas publicitarias, redes sociales, promociones, email marketing, influencers u otras iniciativas. Lo que funcionó y lo que no.</p>
+    <div class="field"><label for="q_acciones" hidden>Respuesta</label>
+      <textarea id="q_acciones" name="acciones_previas" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <!-- ============ NUESTRO TRABAJO ============ -->
+  <section class="step" data-step="13" data-section="Nuestro trabajo">
+    <p class="eyebrow">Nuestro trabajo</p>
+    <h2>¿Qué esperás que hagamos juntos?</h2>
+    <p class="hint">Lo que quisieras resolver o lograr con nuestra ayuda, y para cuándo. Pensá en los próximos 6 a 12 meses: aumentar ventas, mejorar la rentabilidad, crecer en ecommerce, desarrollar la venta mayorista, captar nuevos mercados o fortalecer la marca.</p>
+    <div class="field"><label for="q_objetivos" hidden>Respuesta</label>
+      <textarea id="q_objetivos" name="objetivos" placeholder="Escribí acá con tus palabras…"></textarea></div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="button" class="btn btn-primary" data-next>Siguiente →</button></div>
+  </section>
+
+  <!-- ============ PARA CERRAR ============ -->
+  <section class="step" data-step="14" data-section="Para cerrar">
+    <p class="eyebrow">Para cerrar</p>
+    <h2>¿Hay algo que no te preguntamos y sea importante que sepamos?</h2>
+    <p class="hint">Cualquier necesidad, dificultad o proyecto que nos ayude a entender mejor el negocio y tus expectativas.</p>
+    <div class="field"><label for="q_extra" hidden>Respuesta</label>
+      <textarea id="q_extra" name="extra" style="min-height:110px" placeholder="Escribí acá con tus palabras…"></textarea></div>
+
+    <p class="subq">¿Cómo te encontramos?</p>
+    <p class="subq-hint">Con estos datos te escribimos para seguir la conversación.</p>
+    <div class="two">
+      <div class="field" data-required><label for="q_nombre">Nombre y apellido *</label>
+        <input type="text" id="q_nombre" name="nombre" autocomplete="name" required>
+        <div class="error">Contanos tu nombre para poder escribirte.</div></div>
+      <div class="field"><label for="q_empresa">Empresa</label>
+        <input type="text" id="q_empresa" name="empresa" value="Healthy Shop" autocomplete="organization"></div>
+      <div class="field" data-required><label for="q_email">Email *</label>
+        <input type="email" id="q_email" name="email" autocomplete="email" inputmode="email" required>
+        <div class="error">Revisá que el email esté bien escrito.</div></div>
+      <div class="field"><label for="q_whatsapp">WhatsApp</label>
+        <input type="tel" id="q_whatsapp" name="whatsapp" autocomplete="tel" inputmode="tel" placeholder="+54 9 11 …"></div>
+    </div>
+    <fieldset class="field">
+      <legend class="label">¿Cómo preferís comunicarte con nosotros durante el proceso?</legend>
+      <div class="options">
+        <label class="opt"><input type="radio" name="contacto_preferido" value="WhatsApp"><span>WhatsApp</span></label>
+        <label class="opt"><input type="radio" name="contacto_preferido" value="Email"><span>Email</span></label>
+        <label class="opt"><input type="radio" name="contacto_preferido" value="Llamada"><span>Llamada</span></label>
+        <label class="opt"><input type="radio" name="contacto_preferido" value="Videollamada"><span>Videollamada</span></label>
+      </div>
+    </fieldset>
+
+    <div class="submit-error" id="submitError" role="alert">No pudimos enviar tus respuestas. Revisá tu conexión e intentá de nuevo, o escribinos por WhatsApp o email y lo resolvemos juntos.</div>
+    <div class="nav"><button type="button" class="btn btn-ghost" data-prev>← Volver</button><span class="spacer"></span><button type="submit" class="btn btn-primary" id="submitBtn">Enviar respuestas</button></div>
+  </section>
+
+  <!-- ============ GRACIAS ============ -->
+  <section class="step" data-step="15" data-section="Gracias" id="thanks">
+    <svg class="final-hat" viewBox="0 0 1993 1139" aria-hidden="true"><use href="#hat"/></svg>
+    <p class="eyebrow">Gracias</p>
+    <h1>Eso es todo.</h1>
+    <hr class="rule">
+    <p class="lead">Gracias por contarnos cómo ves tu marca y tu negocio. Con tus respuestas armamos una propuesta pensada a medida, con objetivos, alcance y honorarios acordes a lo que necesita Healthy Shop.</p>
+    <p class="lead">En breve nos ponemos en contacto con vos. Si preferís, también lo completamos juntos en una llamada corta.</p>
+    <p class="meta">sombrerorosa.com · @sombrerorosastudio</p>
+  </section>
+
+</form>
+</main>
+
+<footer class="foot">sombrerorosa.com · @sombrerorosastudio</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =====================================================================
+     CONFIGURACIÓN DE HUBSPOT  (para Claude Code)
+     ---------------------------------------------------------------------
+     - Mismo mecanismo que el formulario de Aluminios BA: envío client-side
+       a la Forms API v3, sin token.
+     - portalId: portal de Sombrero Rosa (el mismo del formulario de Aluminios).
+     - formGuid: PENDIENTE. Crear/duplicar el formulario de HubSpot de
+       Healthy Shop y pegar su GUID acá. Mientras tenga el valor de
+       placeholder, el envío corre en MODO PRUEBA (no llama a HubSpot,
+       imprime el payload en consola y muestra la pantalla de gracias).
+     - FIELD_MAP: nombres internos de las propiedades de HubSpot. Ajustar
+       a los del formulario real (copiar el mapeo del de Aluminios BA).
+     ===================================================================== */
+  var HS = {
+    portalId: '49258509',
+    formGuid: 'REEMPLAZAR_CON_GUID_DEL_FORM_HEALTHY_SHOP',
+    clientName: 'Healthy Shop'
+  };
+  var FIELD_MAP = {
+    firstname: 'firstname',
+    lastname:  'lastname',
+    email:     'email',
+    company:   'company',
+    whatsapp:  'hs_whatsapp_phone_number',
+    brief:     'message'          // todo el brief consolidado, en texto legible
+  };
+
+  /* Etiquetas para armar el brief consolidado (orden = orden del cuestionario) */
+  var BRIEF = [
+    ['TU MARCA', null],
+    ['¿A quién le habla Healthy Shop?', 'publico'],
+    ['¿Qué problema concreto resuelve en la vida de esa persona?', 'problema'],
+    ['¿Qué no quiere que se diga, sienta o asocie con la marca?', 'no_asociar'],
+    ['¿Qué desea de su marca?', 'deseo'],
+    ['¿Cómo se imagina Healthy Shop dentro de tres años?', 'tres_anios'],
+    ['TU NEGOCIO', null],
+    ['Página web', 'web'],
+    ['Instagram', 'instagram'],
+    ['Facebook', 'facebook'],
+    ['TikTok', 'tiktok'],
+    ['Mercado Libre (perfil)', 'mercadolibre'],
+    ['Otras redes o perfiles', 'otras_redes'],
+    ['Canales de venta', 'canales'],
+    ['Canal que más pesa / otros', 'canal_principal'],
+    ['Productos que más salen / marca propia', 'productos_top'],
+    ['Productos a impulsar prioritariamente', 'productos_impulsar'],
+    ['Publicidad digital (frecuencia)', 'publicidad_frecuencia'],
+    ['Publicidad digital (medios)', 'publicidad_medios'],
+    ['Inversión mensual en publicidad', 'inversion_mensual'],
+    ['Ventas mensuales: tienda online propia', 'ventas_web'],
+    ['Ventas mensuales: Mercado Libre', 'ventas_ml'],
+    ['Ventas mensuales: redes / WhatsApp', 'ventas_redes'],
+    ['Ventas mensuales: tienda física', 'ventas_fisica'],
+    ['Ventas mensuales: otros canales', 'ventas_otros'],
+    ['Ticket promedio', 'ticket_promedio'],
+    ['Ticket minorista / mayorista', 'ticket_nota'],
+    ['Dificultades principales (hasta 3)', 'dificultades'],
+    ['Dificultades, en sus palabras', 'dificultades_texto'],
+    ['Acciones de marketing previas y resultados', 'acciones_previas'],
+    ['NUESTRO TRABAJO', null],
+    ['Qué espera que hagamos juntos y para cuándo (objetivos 6 a 12 meses)', 'objetivos'],
+    ['PARA CERRAR', null],
+    ['Algo más que debamos saber', 'extra'],
+    ['Preferencia de contacto', 'contacto_preferido']
+  ];
+
+  var form = document.getElementById('briefForm');
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
+  var TOTAL = 14;               // preguntas (sin intro ni gracias)
+  var current = 0;
+  var bar = document.getElementById('bar');
+  var counter = document.getElementById('counter');
+  var hat = document.getElementById('brandHat');
+  var submitBtn = document.getElementById('submitBtn');
+  var submitError = document.getElementById('submitError');
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function show(n) {
+    current = n;
+    steps.forEach(function (s, i) { s.classList.toggle('active', i === n); });
+    var pct = n === 0 ? 0 : Math.min(100, Math.round((n / TOTAL) * 100));
+    bar.style.width = (n >= TOTAL + 1 ? 100 : pct) + '%';
+    counter.innerHTML = (n >= 1 && n <= TOTAL) ? '<b>' + pad(n) + '</b> / ' + TOTAL : '';
+    /* Sombrero: en reposo -> inclinado durante el proceso -> puesto al final */
+    hat.style.transform = (n === 0) ? 'rotate(0deg)' : (n > TOTAL ? 'rotate(0deg)' : 'rotate(-7deg)');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var first = steps[n].querySelector('textarea, input[type=text]:not([tabindex="-1"]), input[type=email]');
+    if (first && n > 0 && n <= TOTAL) { setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) {} }, 350); }
+  }
+
+  /* Navegación */
+  form.addEventListener('click', function (e) {
+    if (e.target.closest('[data-next]')) { if (validate(current)) show(current + 1); }
+    else if (e.target.closest('[data-prev]')) { show(current - 1); }
+  });
+
+  /* Validación: solo nombre y email son obligatorios (último paso) */
+  function validate(n) {
+    var ok = true;
+    steps[n].querySelectorAll('.field[data-required]').forEach(function (f) {
+      var input = f.querySelector('input');
+      var valid = input.type === 'email'
+        ? /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim())
+        : input.value.trim().length > 1;
+      f.classList.toggle('invalid', !valid);
+      if (!valid && ok) { input.focus(); }
+      if (!valid) ok = false;
+    });
+    return ok;
+  }
+
+  /* Máximo 3 dificultades */
+  var limitNote = document.getElementById('limitNote');
+  document.getElementById('dificultadesOpts').addEventListener('change', function (e) {
+    var checked = form.querySelectorAll('input[name="dificultades"]:checked');
+    if (checked.length > 3) {
+      e.target.checked = false;
+      limitNote.textContent = 'Elegí hasta tres. Si querés cambiar una, desmarcá otra primero.';
+    } else { limitNote.textContent = ''; }
+  });
+
+  /* Helpers de lectura */
+  function val(name) {
+    var els = form.querySelectorAll('[name="' + name + '"]');
+    if (!els.length) return '';
+    var t = els[0].type;
+    if (t === 'checkbox') {
+      return Array.prototype.filter.call(els, function (x) { return x.checked; })
+        .map(function (x) { return x.value; }).join(', ');
+    }
+    if (t === 'radio') {
+      var r = form.querySelector('[name="' + name + '"]:checked');
+      return r ? r.value : '';
+    }
+    return els[0].value.trim();
+  }
+
+  function buildBrief() {
+    var out = ['CUESTIONARIO DE BRIEFING · ' + HS.clientName.toUpperCase(), ''];
+    BRIEF.forEach(function (row) {
+      if (row[1] === null) { out.push('', '== ' + row[0] + ' =='); return; }
+      var v = val(row[1]);
+      if (v) out.push(row[0] + ': ' + v);
+    });
+    return out.join('\n');
+  }
+
+  function getCookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : undefined;
+  }
+
+  function buildPayload() {
+    var full = val('nombre');
+    var parts = full.split(/\s+/);
+    var first = parts.shift() || '';
+    var last = parts.join(' ');
+    var fields = [];
+    function add(name, value) { if (value) fields.push({ objectTypeId: '0-1', name: name, value: value }); }
+    add(FIELD_MAP.firstname, first);
+    add(FIELD_MAP.lastname, last);
+    add(FIELD_MAP.email, val('email'));
+    add(FIELD_MAP.company, val('empresa') || HS.clientName);
+    add(FIELD_MAP.whatsapp, val('whatsapp'));
+    add(FIELD_MAP.brief, buildBrief());
+    var payload = {
+      submittedAt: Date.now(),
+      fields: fields,
+      context: { pageUri: window.location.href, pageName: document.title }
+    };
+    var hutk = getCookie('hubspotutk');
+    if (hutk) payload.context.hutk = hutk;
+    return payload;
+  }
+
+  /* Envío */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (current !== TOTAL) return;
+    if (!validate(current)) return;
+    if (form.elements['website_hp'].value) { show(TOTAL + 1); return; }  /* bot */
+
+    submitError.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    var payload = buildPayload();
+    var devMode = HS.formGuid.indexOf('REEMPLAZAR') === 0;
+
+    if (devMode) {
+      console.warn('[Modo prueba] formGuid sin configurar. No se envió nada a HubSpot. Payload:', payload);
+      setTimeout(function () { show(TOTAL + 1); }, 500);
+      return;
+    }
+
+    fetch('https://api.hsforms.com/submissions/v3/integration/submit/' + HS.portalId + '/' + HS.formGuid, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) { return res.json().catch(function () { return {}; }).then(function (b) { throw new Error('HubSpot ' + res.status + ' ' + JSON.stringify(b)); }); }
+      show(TOTAL + 1);
+    }).catch(function (err) {
+      console.error(err);
+      submitError.classList.add('show');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar respuestas';
+    });
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
